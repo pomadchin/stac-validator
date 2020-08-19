@@ -10,21 +10,21 @@ from stac_validator import stac_validator
 def validate_item(stac_item, out):
     """A simple program that validates a local STAC item."""
  
-    click.echo(click.style('stac-validator-api', blink=True, bold=True))
+    click.echo(click.style('stac-validator-cli', blink=True, bold=True))
     click.echo(click.style('Stac_item: %s' % stac_item, bg='black', fg='green', bold=True))
     
-    # pystac validation
+    # # pystac validation
     # item = Item.from_file(stac_item)
     # item.validate()
     # print(item.validate())
-    # print(item.bbox)
+    # # print(item.bbox)
 
     # stac-validator validation
     stac = stac_validator.StacValidate(stac_item)
     click.echo(click.style(stac.run(), bg='black', fg='white', bold=True))
     
     # write to text file
-    click.echo(stac.run(), file=out)
+    # click.echo(stac.run(), file=out)
     
 if __name__ == '__main__':
     validate_item()
