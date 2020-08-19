@@ -20,8 +20,14 @@ def validate_item(stac_item, out):
     # # print(item.bbox)
 
     # stac-validator validation
-    stac = stac_validator.StacValidate(stac_item)
-    click.echo(click.style(stac.run(), bg='black', fg='white', bold=True))
+    stac_spec_dirs=None
+    version="master"
+    log_level="DEBUG"
+    follow=False
+    
+    stac = stac_validator.StacValidate(stac_item, stac_spec_dirs, version, log_level, follow)
+    result = stac.run()
+    click.echo(click.style(result, bg='black', fg='white', bold=True))
     
     # write to text file
     # click.echo(stac.run(), file=out)
