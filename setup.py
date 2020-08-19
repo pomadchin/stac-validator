@@ -8,6 +8,7 @@ setup(
         'click',
         'pystac[validation]',
         'stac-validator',
+        'colorama',
     ],
     entry_points='''
         [console_scripts]
