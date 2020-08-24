@@ -2,7 +2,7 @@ import click
 import pystac
 import json
 from pystac import Item, Catalog
-from stac_validator import stac_validator
+# from stac_validator import stac_validator
 
 @click.command()
 @click.option('--stac_item', default='sentinel2-sample.json', help="Local stac item to validate")
