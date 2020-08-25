@@ -1,1 +1,0 @@
-[{"asset_type": "collection", "valid_stac": false, "error_message": "'description' is a required property of []", "path": "sentinel2-sample.json"}, {"asset_type": "collection", "valid_stac": false, "error_message": "'description' is a required property of []", "path": "sentinel2-sample.json"}]
