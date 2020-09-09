@@ -1,7 +1,7 @@
 import json
 import uuid
 import stac_validator
-import trio
+# import trio
 
 def handler(event, context):
     """
@@ -32,8 +32,8 @@ def handler(event, context):
 
     def _run_validate(url, version="missing"):
         stac = stac_validator.StacValidate(url, version)
-        trio.run(stac.run)
+        stac.run()
         return stac
 
-    stac = _run_validate(stac_file.strip(), version).message
-    return stac
+    stac = _run_validate(stac_file.strip(), version)
+    return stac.message[0]

@@ -13,5 +13,5 @@ stac_file = 'https://raw.githubusercontent.com/radiantearth/stac-spec/master/cat
 version = '0.9.0'
 stac = _run_validate(stac_file, version)
 #print(stac_file.strip())
-print(json.dumps(stac.message, indent=4))
+print(json.dumps(stac.message[0], indent=4))
 #return stac
