@@ -299,83 +299,102 @@ class StacValidate:
         message["asset_type"] = self.stac_type
 
         try:
-            if(self.custom):
-                schema, _ = self.fetch_and_parse_file(self.custom)
-                jsonschema.validate(stac_content, schema)
-                self.message.append(message)
-                message['schema'] = self.custom
-                message["custom"] = True
-                message["valid_stac"] = True
-                return json.dumps(self.message)
+            # if(self.custom):
+            #     schema, _ = self.fetch_and_parse_file(self.custom)
+            #     jsonschema.validate(stac_content, schema)
+            #     self.message.append(message)
+            #     message['schema'] = self.custom
+            #     message["custom"] = True
+            #     message["valid_stac"] = True
+            #     return json.dumps(self.message)
 
-            if(self.legacy):
-                schema = self.validate_legacy(stac_content)
-                self.message.append(message)
-                message['schema'] = schema
-                message["legacy"] = True
-                message['validated_version'] = self.version
-                message["valid_stac"] = True
-                return json.dumps(self.message)
+            # if(self.legacy):
+            #     schema = self.validate_legacy(stac_content)
+            #     self.message.append(message)
+            #     message['schema'] = schema
+            #     message["legacy"] = True
+            #     message['validated_version'] = self.version
+            #     message["valid_stac"] = True
+            #     return json.dumps(self.message)
             
-            if(self.force):
-                if 'stac_version' in stac_content:
-                        self.version = stac_content['stac_version']        
-                message["original_version"] = self.version
-                message["force"] = True
-                stac_content = self.fix_stac_missing(stac_content)
-                self.version = stac_content['stac_version']
+            # if(self.force):
+            #     if 'stac_version' in stac_content:
+            #             self.version = stac_content['stac_version']        
+            #     message["original_version"] = self.version
+            #     message["force"] = True
+            #     stac_content = self.fix_stac_missing(stac_content)
+            #     self.version = stac_content['stac_version']
                 
-            message["id"] = stac_content["id"]
+            # message["id"] = stac_content["id"]
 
             if(self.version!='missing'):
                 self.version = self.fix_version(self.version)
             else:
                 self.version = self.fix_version(stac_content['stac_version'])
                
-            if(self.update):
-                message["original_verson"] = self.version
-                message["update"] = True
-                stac_content_migrated = self.migrate(stac_content)   
 
-                diffy = self.diff(stac_content, stac_content_migrated)
-                message["diff"] = diffy
+
+            # if(self.update):
+            #     message["original_verson"] = self.version
+            #     message["update"] = True
+            #     stac_content_migrated = self.migrate(stac_content)   
+
+            #     diffy = self.diff(stac_content, stac_content_migrated)
+            #     message["diff"] = diffy
                 
-                stac_content = stac_content_migrated
+            #     stac_content = stac_content_migrated
             
             message['validated_version'] = self.version
 
-            if(self.legacy == False):
-                version_list = ['0.8.0', '0.8.1', '0.9.0', '1.0.0-beta.2']
-                if self.version not in version_list:
-                    raise VersionException
+            # if(self.legacy == False):
+            #     version_list = ['0.8.0', '0.8.1', '0.9.0', '1.0.0-beta.2']
+            #     if self.version not in version_list:
+            #         raise VersionException
 
-            extension_list = ['checksum', 'collection-assets', 'datacube', 'eo', 'item-assets', 'label', 'pointcloud', 
-                'projection', 'sar', 'sat', 'scientific', 'single-file-stac', 'tiled-assets', 'timestamps', 'version', 'view']
-            if(self.extension):    
-                if self.extension not in extension_list:
-                    raise ExtensionException
+            # extension_list = ['checksum', 'collection-assets', 'datacube', 'eo', 'item-assets', 'label', 'pointcloud', 
+            #     'projection', 'sar', 'sat', 'scientific', 'single-file-stac', 'tiled-assets', 'timestamps', 'version', 'view']
+            # if(self.extension):    
+            #     if self.extension not in extension_list:
+            #         raise ExtensionException
 
             
-            if(self.recursive):
-                message["recursive"] = True
-                rootlink = stac_content["links"][0]["href"]
-                pystac.validation.validate_all(stac_content, rootlink)
-            elif(self.extension):
-                message["extension_flag"] = self.extension
-                stacschema = pystac.validation.JsonSchemaSTACValidator()
-                self.stac_type = self.stac_type.upper()
-                stacschema.validate_extension(stac_dict=stac_content, stac_object_type=self.stac_type, stac_version=self.version, extension_id=self.extension)
-            elif(self.core):
-                message["core"] = True
-                stacschema = pystac.validation.JsonSchemaSTACValidator()
-                self.stac_type = self.stac_type.upper()
-                stacschema.validate_core(stac_dict=stac_content, stac_object_type=self.stac_type, stac_version=self.version)
-            else:
-                root_schema = 'https://schemas.stacspec.org/v1.0.0-beta.2/'
-                if self.version == '1.0.0-beta.2' and self.stac_type in ['item', 'collection', 'catalog']:
-                    schema_example, _ = self.fetch_and_parse_file(root_schema + f'{self.stac_type}-spec/json-schema/{self.stac_type}.json')
-                    jsonschema.validate(stac_content, schema_example)
+            # if(self.recursive):
+            #     message["recursive"] = True
+            #     rootlink = stac_content["links"][0]["href"]
+            #     pystac.validation.validate_all(stac_content, rootlink)
+            # elif(self.extension):
+            #     message["extension_flag"] = self.extension
+            #     stacschema = pystac.validation.JsonSchemaSTACValidator()
+            #     self.stac_type = self.stac_type.upper()
+            #     stacschema.validate_extension(stac_dict=stac_content, stac_object_type=self.stac_type, stac_version=self.version, extension_id=self.extension)
+            # elif(self.core):
+            #     message["core"] = True
+            #     stacschema = pystac.validation.JsonSchemaSTACValidator()
+            #     self.stac_type = self.stac_type.upper()
+            #     stacschema.validate_core(stac_dict=stac_content, stac_object_type=self.stac_type, stac_version=self.version)
+            root_schema = 'https://schemas.stacspec.org/v1.0.0-beta.2/'
+            if self.version == '1.0.0-beta.2' and self.stac_type in ['item', 'collection', 'catalog']:
+                schema_example, _ = self.fetch_and_parse_file(root_schema + f'{self.stac_type}-spec/json-schema/{self.stac_type}.json')
+                jsonschema.validate(stac_content, schema_example)
+            # # logic for staclint
+            pystac_version_list = ['0.8.0', '0.8.1', '0.9.0', '1.0.0-beta.2']
+            old_versions = ['v0.4.0','v0.4.1','v0.5.0','v0.5.1','v0.5.2','v0.6.0', 'v0.6.0-rc1',
+                'v0.6.0-rc2','v0.6.1','v0.6.2','0.7.0','v0.8.0','v0.8.0-rc1','v0.8.1','v0.9.0',
+                'v0.9.0-rc1','v0.9.0-rc2','v1.0.0-beta.1']
+            
+            if self.version in pystac_version_list:
                 pystac.validation.validate_dict(stac_content, stac_version=self.version)
+                # raise VersionException
+            elif self.version in old_versions:
+                print("hello") 
+                print(self.version)
+                schema = self.validate_legacy(stac_content)
+                # self.message.append(message)
+                message['schema'] = schema
+            else:
+                raise VersionException
+
+                
     
             message["valid_stac"] = True
                           
